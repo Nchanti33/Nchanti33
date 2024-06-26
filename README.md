@@ -34,4 +34,6 @@ Pour l'instant étudiant en programmation informatique, je souhaite tourner la f
 
 ## Mon CV
 
-![Image de mon CV](/CV_Noah_89_v9.png)
+![Mon CV](/CV_Noah_89_v9.png)
+
+![Ma vidéo d'introduction](/)
