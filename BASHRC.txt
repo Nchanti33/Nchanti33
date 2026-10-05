@@ -1,0 +1,62 @@
+# Omarchy environment (OMARCHY_PATH + PATH), needed even for non-interactive shells
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+
+# If not running interactively, don't do anything else (leave this above the rc source)
+[[ $- != *i* ]] && return
+
+# All the default Omarchy aliases and functions
+# (don't mess with these directly, just overwrite them here!)
+source "$OMARCHY_PATH/default/bash/rc"
+
+# Add your own exports, aliases, and functions here.
+#
+# Make an alias for invoking commands you use constantly
+# alias p='python'
+
+# ~/.bashrc: exécuté par bash(1) pour les shells interactifs.
+
+# Ne rien faire si le shell n'est pas interactif
+[[ $- != *i* ]] && return
+
+# Configuration de l'historique
+HISTCONTROL=ignoredups:erasedups  # Supprime les doublons
+HISTSIZE=10000                    # Nombre de lignes en mémoire
+HISTFILESIZE=20000                # Nombre de lignes dans le fichier
+shopt -s histappend               # Ajoute à l'historique au lieu de l'écraser
+
+# Vérification de la taille de la fenêtre après chaque commande
+shopt -s checkwinsize
+
+# Couleurs pour le terminal
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Raccourcis (Alias) utiles
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias cls='clear'
+alias h='history'
+alias gs='git status'
+alias ga='git add .'
+gc() {
+    git commit -m "$1"
+}
+alias gps='git push'
+alias gpl='git pull'
+alias gb='git branch'
+alias gch='git checkout'
+alias tree='tree -C'
+find() {
+    find $1 -exec ls --color -d {} \;
+}
+
+# Personnalisation simple du prompt (Affichage utilisateur, hôte et dossier)
+PROMPT_COMMAND='PS1_CMD1=$(ip route get 1.1.1.1 | awk -F"src " '"'"'NR == 1{ split($2, a," ");print a[1]}'"'"'); PS1_CMD2=$(git branch --show-current 2>/dev/null)'; PS1='\[\e[1;38;5;39m\]╭─╾─[\[\e[38;5;51m\]IP ${PS1_CMD1}\[\e[38;5;39m\]]─[\[\e[38;5;226m\]\D{%d.%m.%Y}-\A\[\e[38;5;39m\]]─[\[\e[38;5;208m\]\w\[\e[38;5;39m\]]\n╰─╾─[\[\e[38;5;213m\] ${PS1_CMD2:-no-git}\[\e[38;5;39m\]] \[\e[1;38;5;46m\]❯\[\e[0m\] '
+
